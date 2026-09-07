@@ -36,7 +36,7 @@ function App() {
       {/* Main Content Sections */}
       <main>
         <Hero onOpenEstimator={() => setIsEstimatorOpen(true)} />
-        <Portfolio />
+        <Portfolio onSelectEstimate={handleSelectEstimate} />
         <Services onOpenEstimator={() => setIsEstimatorOpen(true)} />
         <About />
         <Testimonials />

@@ -11,14 +11,24 @@ import {
   Users,
   Clock,
   DollarSign,
+  Monitor,
+  Smartphone,
+  Globe,
+  Layers,
 } from "lucide-react";
 
 const projectTypes = [
-  { id: "ai", name: "AI & LLM Platform", basePrice: 12000, baseWeeks: 4 },
-  { id: "web", name: "High-Perf Web App", basePrice: 8000, baseWeeks: 3 },
-  { id: "spatial", name: "Spatial 3D / WebGPU", basePrice: 14000, baseWeeks: 5 },
-  { id: "mobile", name: "Mobile App (iOS/Android)", basePrice: 10000, baseWeeks: 4 },
-  { id: "design", name: "Design System & Branding", basePrice: 6000, baseWeeks: 2 },
+  { id: "ai", name: "AI & LLM Platform", basePrice: 12000, baseWeeks: 4, team: ["1 Lead AI Architect", "2 Senior React Engineers", "1 UX Designer"] },
+  { id: "web", name: "High-Perf Web App", basePrice: 8000, baseWeeks: 3, team: ["1 Lead Full-Stack Engineer", "1 UI/UX Designer"] },
+  { id: "spatial", name: "Spatial 3D / WebGPU", basePrice: 14000, baseWeeks: 5, team: ["1 3D Graphics Engineer", "1 React Developer", "1 Spatial Designer"] },
+  { id: "mobile", name: "Mobile App (iOS/Android)", basePrice: 10000, baseWeeks: 4, team: ["2 Mobile Engineers", "1 Product Designer"] },
+  { id: "design", name: "Design System & Branding", basePrice: 6000, baseWeeks: 2, team: ["2 Lead Product Designers"] },
+];
+
+const platformTargets = [
+  { id: "web", name: "Web Browser", multiplier: 1.0, icon: Monitor },
+  { id: "mobile", name: "Native Mobile", multiplier: 1.15, icon: Smartphone },
+  { id: "cross", name: "Cross-Platform", multiplier: 1.3, icon: Globe },
 ];
 
 const featureAddons = [
@@ -31,13 +41,14 @@ const featureAddons = [
 ];
 
 const timelineSpeed = [
-  { id: "rapid", name: "Rapid Sprint (Priority)", multiplier: 1.25, label: "25% Acceleration" },
+  { id: "rapid", name: "Rapid Sprint (Accelerated)", multiplier: 1.25, label: "25% Priority Boost" },
   { id: "standard", name: "Standard Studio Pace", multiplier: 1.0, label: "Recommended" },
   { id: "relaxed", name: "Flexible Timeline", multiplier: 0.9, label: "Best Value" },
 ];
 
 export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
   const [selectedType, setSelectedType] = useState(projectTypes[0]);
+  const [selectedPlatform, setSelectedPlatform] = useState(platformTargets[0]);
   const [selectedAddons, setSelectedAddons] = useState(["rag", "dashboard"]);
   const [selectedSpeed, setSelectedSpeed] = useState(timelineSpeed[1]);
 
@@ -51,13 +62,13 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
     }
   };
 
-  // Calculate dynamic totals
+  // Dynamic calculations
   const addonsTotal = selectedAddons.reduce((acc, addonId) => {
     const addon = featureAddons.find((a) => a.id === addonId);
     return acc + (addon ? addon.price : 0);
   }, 0);
 
-  const rawPrice = (selectedType.basePrice + addonsTotal) * selectedSpeed.multiplier;
+  const rawPrice = (selectedType.basePrice + addonsTotal) * selectedPlatform.multiplier * selectedSpeed.multiplier;
   const estimatedPriceMin = Math.round(rawPrice * 0.95);
   const estimatedPriceMax = Math.round(rawPrice * 1.15);
 
@@ -66,13 +77,13 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
     Math.round(selectedType.baseWeeks * (selectedSpeed.id === "rapid" ? 0.75 : 1))
   );
 
-  const handleProceedWithEstimate = () => {
+  const handleApplyEstimate = () => {
     const estimateDetails = {
-      projectType: selectedType.name,
+      projectType: `${selectedType.name} (${selectedPlatform.name})`,
       features: selectedAddons.map(
         (id) => featureAddons.find((a) => a.id === id)?.name
       ),
-      estimatedBudget: `$${estimatedPriceMin.toLocaleString()} - $${estimatedPriceMax.toLocaleString()}`,
+      estimatedBudget: `$${estimatedPriceMin.toLocaleString()} – $${estimatedPriceMax.toLocaleString()}`,
       estimatedWeeks: `${estimatedWeeks} Weeks`,
     };
     onSelectEstimate(estimateDetails);
@@ -87,7 +98,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         className="relative w-full max-w-3xl bg-[#0f172a] border border-white/15 rounded-3xl overflow-hidden shadow-2xl space-y-0"
       >
-        {/* Modal Header */}
+        {/* Header */}
         <div className="p-6 sm:p-8 bg-[#131d33] border-b border-white/10 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
@@ -98,7 +109,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
                 Interactive Scope &amp; Cost Estimator
               </h3>
               <p className="text-xs text-slate-300">
-                Configure your project requirements for a real-time budget breakdown.
+                Customize your project parameters for real-time cost and timeline estimates.
               </p>
             </div>
           </div>
@@ -111,13 +122,14 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
           </button>
         </div>
 
-        {/* Modal Body */}
+        {/* Form Body */}
         <div className="p-6 sm:p-8 space-y-8 max-h-[65vh] overflow-y-auto">
           
-          {/* Step 1: Project Type */}
+          {/* Step 1: Project Category */}
           <div className="space-y-3">
-            <label className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading">
-              1. Select Primary Project Category
+            <label className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading flex items-center gap-2">
+              <Layers className="w-4 h-4 text-cyan-400" />
+              <span>1. Select Project Category</span>
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
               {projectTypes.map((type) => (
@@ -131,7 +143,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
                   }`}
                 >
                   <div className="font-semibold">{type.name}</div>
-                  <div className="text-[10px] text-slate-400 font-mono mt-1">
+                  <div className="text-[10px] text-cyan-400 font-mono mt-1">
                     From ${type.basePrice.toLocaleString()}
                   </div>
                 </button>
@@ -139,10 +151,38 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
             </div>
           </div>
 
-          {/* Step 2: Feature Addons */}
+          {/* Step 2: Target Platform */}
           <div className="space-y-3">
-            <label className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading">
-              2. Add Advanced Modules &amp; Integrations
+            <label className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading flex items-center gap-2">
+              <Monitor className="w-4 h-4 text-cyan-400" />
+              <span>2. Target Deployment Platform</span>
+            </label>
+            <div className="grid grid-cols-3 gap-2.5">
+              {platformTargets.map((plat) => {
+                const Icon = plat.icon;
+                return (
+                  <button
+                    key={plat.id}
+                    onClick={() => setSelectedPlatform(plat)}
+                    className={`flex items-center gap-2 p-3 rounded-2xl border text-xs font-semibold transition-all ${
+                      selectedPlatform.id === plat.id
+                        ? "bg-purple-500/20 border-purple-500 text-white shadow-md"
+                        : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
+                    }`}
+                  >
+                    <Icon className="w-4 h-4 text-purple-400 shrink-0" />
+                    <span>{plat.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Step 3: Feature Modules */}
+          <div className="space-y-3">
+            <label className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading flex items-center gap-2">
+              <Zap className="w-4 h-4 text-cyan-400" />
+              <span>3. Add Advanced Feature Modules</span>
             </label>
             <div className="grid sm:grid-cols-2 gap-2.5">
               {featureAddons.map((addon) => {
@@ -159,7 +199,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
                   >
                     <div className="flex items-center gap-2.5">
                       <div
-                        className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                        className={`w-4 h-4 rounded-md border flex items-center justify-center ${
                           isSelected
                             ? "bg-purple-500 border-purple-400 text-white"
                             : "border-slate-500"
@@ -178,10 +218,11 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
             </div>
           </div>
 
-          {/* Step 3: Speed & Acceleration */}
+          {/* Step 4: Velocity */}
           <div className="space-y-3">
-            <label className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading">
-              3. Desired Launch Velocity
+            <label className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading flex items-center gap-2">
+              <Clock className="w-4 h-4 text-cyan-400" />
+              <span>4. Target Launch Velocity</span>
             </label>
             <div className="grid grid-cols-3 gap-2.5">
               {timelineSpeed.map((speed) => (
@@ -201,14 +242,32 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
             </div>
           </div>
 
+          {/* Recommended Team Composition Preview */}
+          <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 text-xs">
+            <div className="text-slate-400 font-mono flex items-center gap-2">
+              <Users className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Recommended Studio Team:</span>
+            </div>
+            <div className="flex flex-wrap gap-2 pt-1">
+              {selectedType.team.map((member, idx) => (
+                <span
+                  key={idx}
+                  className="px-2.5 py-1 rounded-lg bg-slate-900 border border-white/10 text-slate-200 font-mono text-[11px]"
+                >
+                  {member}
+                </span>
+              ))}
+            </div>
+          </div>
+
         </div>
 
-        {/* Calculation Summary Bar Footer */}
+        {/* Dynamic Calculation Footer */}
         <div className="p-6 bg-[#090d16] border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-6">
             <div>
               <div className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">
-                Estimated Scope Range
+                Estimated Budget
               </div>
               <div className="text-2xl font-extrabold text-white font-heading gradient-text-cyan">
                 ${estimatedPriceMin.toLocaleString()} – ${estimatedPriceMax.toLocaleString()}
@@ -225,7 +284,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
           </div>
 
           <button
-            onClick={handleProceedWithEstimate}
+            onClick={handleApplyEstimate}
             className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 text-white font-bold text-xs shadow-xl hover:scale-105 transition"
           >
             <span>Lock Estimate &amp; Apply</span>

@@ -9,6 +9,11 @@ import {
   Award,
   CheckCircle2,
   Maximize2,
+  Search,
+  Copy,
+  Check,
+  Play,
+  ArrowRight,
 } from "lucide-react";
 
 const categories = [
@@ -160,26 +165,58 @@ const projects = [
   },
 ];
 
-export default function Portfolio() {
+export default function Portfolio({ onSelectEstimate }) {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedProject, setSelectedProject] = useState(null);
+  const [copiedToast, setCopiedToast] = useState(false);
+  const [simulatingPreview, setSimulatingPreview] = useState(false);
 
-  const filteredProjects =
-    activeCategory === "All"
-      ? projects
-      : projects.filter((p) => p.category === activeCategory);
+  const filteredProjects = projects.filter((p) => {
+    const matchesCategory = activeCategory === "All" || p.category === activeCategory;
+    const matchesSearch =
+      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
+
+  const getCategoryCount = (cat) => {
+    if (cat === "All") return projects.length;
+    return projects.filter((p) => p.category === cat).length;
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopiedToast(true);
+    setTimeout(() => setCopiedToast(false), 2500);
+  };
+
+  const handleRequestSimilar = (proj) => {
+    const estimateObj = {
+      projectType: proj.category,
+      estimatedBudget: "$25,000 – $50,000",
+      estimatedWeeks: "4-6 Weeks",
+    };
+    setSelectedProject(null);
+    if (onSelectEstimate) {
+      onSelectEstimate(estimateObj);
+    } else {
+      const contactSection = document.getElementById("contact");
+      if (contactSection) contactSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <section id="portfolio" className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Background Glow */}
       <div className="ambient-glow-1 opacity-60" />
 
       <div className="relative max-w-7xl mx-auto z-10 space-y-16">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider font-mono">
               <Layers className="w-3.5 h-3.5" />
               <span>Selected Portfolio</span>
             </div>
@@ -189,98 +226,139 @@ export default function Portfolio() {
             </h2>
           </div>
 
-          <p className="text-slate-300 text-base max-w-md">
-            Explore our curated showcase of high-impact AI platforms, spatial web interfaces, and enterprise software engineered for market leadership.
-          </p>
+          {/* Real-time Project Search Bar */}
+          <div className="relative max-w-md w-full">
+            <Search className="absolute left-4 top-3.5 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search projects by tech (e.g. React, LLM, WebGPU)..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#0f172a]/90 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 transition shadow-xl"
+            />
+          </div>
         </div>
 
-        {/* Category Filter Pills */}
+        {/* Category Filter Pills with Count Badges */}
         <div className="flex flex-wrap gap-2.5 pb-2 border-b border-white/10">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={`px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 ${
-                activeCategory === category
-                  ? "bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-lg shadow-cyan-500/25"
-                  : "bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
+          {categories.map((category) => {
+            const count = getCategoryCount(category);
+            return (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+                  activeCategory === category
+                    ? "bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 text-white shadow-lg shadow-cyan-500/25"
+                    : "bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                <span>{category}</span>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${
+                    activeCategory === category
+                      ? "bg-white/20 text-white"
+                      : "bg-white/10 text-slate-400"
+                  }`}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Projects Grid */}
-        <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence>
-            {filteredProjects.map((project) => (
-              <motion.div
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4 }}
-                key={project.id}
-                onClick={() => setSelectedProject(project)}
-                className="group relative rounded-3xl glass-card overflow-hidden cursor-pointer flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300"
-              >
-                {/* Project Thumbnail Image */}
-                <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d1424] via-[#0d1424]/40 to-transparent" />
+        {filteredProjects.length > 0 ? (
+          <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <AnimatePresence>
+              {filteredProjects.map((project) => (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  key={project.id}
+                  onClick={() => setSelectedProject(project)}
+                  className="group relative rounded-3xl glass-card overflow-hidden cursor-pointer flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300"
+                >
+                  {/* Thumbnail Image */}
+                  <div className="relative h-64 overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d1424] via-[#0d1424]/30 to-transparent" />
 
-                  {/* Impact Tag Badge */}
-                  <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0b0f19]/80 backdrop-blur-md border border-white/15 text-emerald-400 text-xs font-bold shadow-md">
-                    <TrendingUp className="w-3.5 h-3.5" />
-                    <span>{project.impact}</span>
-                  </div>
-
-                  <div className="absolute top-4 right-4 p-2 rounded-full bg-[#0b0f19]/80 text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Maximize2 className="w-4 h-4" />
-                  </div>
-                </div>
-
-                {/* Project Details */}
-                <div className="p-6 space-y-4 flex-grow flex flex-col justify-between">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-xs text-cyan-400 font-mono">
-                      <span>{project.category}</span>
-                      <span>{project.year}</span>
+                    {/* Metric Impact Tag */}
+                    <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0b0f19]/90 backdrop-blur-md border border-white/15 text-emerald-400 text-xs font-bold shadow-md">
+                      <TrendingUp className="w-3.5 h-3.5" />
+                      <span>{project.impact}</span>
                     </div>
 
-                    <h3 className="text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors font-heading">
-                      {project.title}
-                    </h3>
-
-                    <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
-                      {project.subtitle}
-                    </p>
+                    <div className="absolute top-4 right-4 p-2 rounded-full bg-[#0b0f19]/80 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Maximize2 className="w-4 h-4" />
+                    </div>
                   </div>
 
-                  {/* Tech Badges */}
-                  <div className="pt-4 border-t border-white/10 flex flex-wrap gap-1.5">
-                    {project.tags.map((t, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-mono text-slate-300"
-                      >
-                        {t}
-                      </span>
-                    ))}
+                  {/* Details */}
+                  <div className="p-6 space-y-4 flex-grow flex flex-col justify-between">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs text-cyan-400 font-mono">
+                        <span>{project.category}</span>
+                        <span>{project.year}</span>
+                      </div>
+
+                      <h3 className="text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors font-heading">
+                        {project.title}
+                      </h3>
+
+                      <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
+                        {project.subtitle}
+                      </p>
+                    </div>
+
+                    {/* Tech Badges */}
+                    <div className="pt-4 border-t border-white/10 flex flex-wrap gap-1.5">
+                      {project.tags.map((t, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-mono text-slate-300"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        ) : (
+          /* Empty Search Results State */
+          <div className="text-center py-16 p-8 rounded-3xl bg-slate-900/60 border border-white/10 space-y-4 max-w-md mx-auto">
+            <Layers className="w-10 h-10 text-slate-500 mx-auto" />
+            <h4 className="text-lg font-bold text-white font-heading">
+              No matching projects found
+            </h4>
+            <p className="text-xs text-slate-400">
+              Try searching for terms like "React", "LLM", or reset your search filter.
+            </p>
+            <button
+              onClick={() => {
+                setSearchQuery("");
+                setActiveCategory("All");
+              }}
+              className="px-4 py-2 rounded-xl bg-cyan-500 text-black font-bold text-xs hover:bg-cyan-400 transition"
+            >
+              Reset Filters
+            </button>
+          </div>
+        )}
 
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* In-depth Project Case Study Modal */}
+        {/* Interactive Case Study Modal */}
         <AnimatePresence>
           {selectedProject && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/80 backdrop-blur-md">
@@ -290,7 +368,7 @@ export default function Portfolio() {
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 className="relative w-full max-w-4xl bg-[#0f172a] border border-white/15 rounded-3xl overflow-hidden shadow-2xl space-y-0"
               >
-                {/* Modal Header Image Banner */}
+                {/* Header Image Banner */}
                 <div className="relative h-72 sm:h-96 w-full">
                   <img
                     src={selectedProject.image}
@@ -299,7 +377,7 @@ export default function Portfolio() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/60 to-transparent" />
 
-                  {/* Close Modal Button */}
+                  {/* Close Button */}
                   <button
                     onClick={() => setSelectedProject(null)}
                     className="absolute top-4 right-4 p-3 rounded-full bg-black/60 hover:bg-black text-white border border-white/20 transition-colors"
@@ -307,7 +385,7 @@ export default function Portfolio() {
                     <X className="w-5 h-5" />
                   </button>
 
-                  {/* Modal Header Info */}
+                  {/* Title Info */}
                   <div className="absolute bottom-6 left-6 right-6 space-y-2">
                     <span className="px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-mono">
                       {selectedProject.client} • Case Study
@@ -319,10 +397,10 @@ export default function Portfolio() {
                   </div>
                 </div>
 
-                {/* Modal Body Content */}
+                {/* Modal Content Body */}
                 <div className="p-6 sm:p-8 space-y-8 max-h-[60vh] overflow-y-auto">
                   
-                  {/* Key Impact Metrics */}
+                  {/* Metrics */}
                   <div className="grid grid-cols-3 gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
                     {selectedProject.metrics.map((m, idx) => (
                       <div key={idx} className="space-y-1">
@@ -336,9 +414,46 @@ export default function Portfolio() {
                     ))}
                   </div>
 
-                  {/* Description */}
+                  {/* Interactive Live Sandbox Simulation Toggle */}
                   <div className="space-y-3">
-                    <h4 className="text-sm uppercase font-bold text-slate-400 tracking-wider font-heading">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading">
+                        Interactive Live Preview Simulation
+                      </h4>
+                      <button
+                        onClick={() => setSimulatingPreview(!simulatingPreview)}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold hover:bg-cyan-500/20 transition"
+                      >
+                        <Play className="w-3.5 h-3.5 fill-cyan-400" />
+                        <span>{simulatingPreview ? "Hide Preview" : "Launch Interactive Demo"}</span>
+                      </button>
+                    </div>
+
+                    {simulatingPreview && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="p-6 rounded-2xl bg-[#080d1a] border border-cyan-500/30 space-y-4 text-center font-mono"
+                      >
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                          <span>Simulated Sandbox Environment Running</span>
+                        </div>
+                        <p className="text-xs text-slate-300 max-w-md mx-auto">
+                          [{selectedProject.title}] v2.4 initialized. All vector embeddings loaded into memory latency test.
+                        </p>
+                        <div className="p-3 bg-slate-900 rounded-xl text-cyan-300 text-[11px] text-left">
+                          &gt; GET /api/v2/metrics: 200 OK (14ms)<br />
+                          &gt; WebGL Shaders compiled: 60 FPS target locked
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+
+                  {/* Overview */}
+                  <div className="space-y-2">
+                    <h4 className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading">
                       Executive Overview
                     </h4>
                     <p className="text-sm text-slate-200 leading-relaxed">
@@ -346,9 +461,9 @@ export default function Portfolio() {
                     </p>
                   </div>
 
-                  {/* Key Deliverables */}
+                  {/* Deliverables */}
                   <div className="space-y-3">
-                    <h4 className="text-sm uppercase font-bold text-slate-400 tracking-wider font-heading">
+                    <h4 className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading">
                       Engineering &amp; Design Highlights
                     </h4>
                     <div className="grid sm:grid-cols-2 gap-3">
@@ -361,43 +476,39 @@ export default function Portfolio() {
                     </div>
                   </div>
 
-                  {/* Tech Stack */}
-                  <div className="space-y-3">
-                    <h4 className="text-sm uppercase font-bold text-slate-400 tracking-wider font-heading">
-                      Architecture &amp; Technologies
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProject.tags.map((t, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-xs font-mono text-cyan-300"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* Footer Actions */}
                   <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
-                    <div className="text-xs text-slate-400 font-mono">
-                      Status: Production Live 🟢
-                    </div>
+                    <button
+                      onClick={handleCopyLink}
+                      className="flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-white transition"
+                    >
+                      {copiedToast ? (
+                        <>
+                          <Check className="w-4 h-4 text-emerald-400" />
+                          <span className="text-emerald-400 font-bold">Copied Share Link!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4" />
+                          <span>Copy Case Study Link</span>
+                        </>
+                      )}
+                    </button>
+
                     <div className="flex gap-3">
                       <button
                         onClick={() => setSelectedProject(null)}
-                        className="px-6 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-slate-200 text-xs font-semibold transition"
+                        className="px-5 py-2.5 rounded-xl bg-white/10 text-slate-200 text-xs font-semibold hover:bg-white/15 transition"
                       >
-                        Close Preview
+                        Close
                       </button>
-                      <a
-                        href="#contact"
-                        onClick={() => setSelectedProject(null)}
-                        className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-white text-xs font-bold shadow-lg transition hover:scale-105"
+                      <button
+                        onClick={() => handleRequestSimilar(selectedProject)}
+                        className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-white text-xs font-bold shadow-lg hover:scale-105 transition"
                       >
                         <span>Request Similar Project</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
 
