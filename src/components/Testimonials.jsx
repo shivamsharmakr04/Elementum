@@ -1,158 +1,204 @@
+import React, { useState } from "react";
 import { motion } from "framer-motion";
+import {
+  Star,
+  Quote,
+  CheckCircle,
+  Play,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  TrendingUp,
+} from "lucide-react";
 
-const users = [
+const testimonials = [
   {
     id: 1,
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-    name: "Sarah Johnson",
+    name: "Dr. Sarah Jenkins",
+    role: "Chief Product Officer",
+    company: "Synthetix Capital",
+    avatar: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80",
+    rating: 5,
+    metric: "+410% Query Velocity",
+    content:
+      "Elementum redesigned our entire AI document intelligence platform from scratch in 5 weeks. Their engineering speed and attention to spatial UI design blew our board away.",
+    project: "Synthetix AI Copilot",
   },
   {
     id: 2,
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-    name: "David Miller",
+    name: "David K. Vance",
+    role: "VP of Digital Innovation",
+    company: "Nexus Couture",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+    rating: 5,
+    metric: "3.2x Mobile Conversions",
+    content:
+      "The WebGPU 3D product configurator Elementum built for us set a new benchmark in luxury e-commerce. Our conversion rates jumped 220% within the first month of launch.",
+    project: "Nexus 3D Web Commerce",
   },
   {
     id: 3,
-    image: "https://randomuser.me/api/portraits/women/22.jpg",
-    name: "Emma Wilson",
-  },
-  {
-    id: 4,
-    image: "https://randomuser.me/api/portraits/men/45.jpg",
-    name: "Alex Brown",
+    name: "Amina Al-Mansoor",
+    role: "Co-Founder & CTO",
+    company: "Aura Labs",
+    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
+    rating: 5,
+    metric: "$1.4B TVL Secured",
+    content:
+      "Security and zero-latency UI were mandatory for our ZK protocol dashboard. Elementum delivered bulletproof code and an intuitive UX that users love.",
+    project: "Aura Decentralized Vault",
   },
 ];
 
-function Testimonials() {
+export default function Testimonials() {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
+  const handleNext = () => {
+    setActiveIdx((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const handlePrev = () => {
+    setActiveIdx((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const current = testimonials[activeIdx];
+
   return (
-    <section
-  id="testimonials"
-  className="py-32 px-6 bg-[#fafafa] overflow-hidden"
->
-      <div className="max-w-7xl mx-auto">
+    <section id="testimonials" className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="ambient-glow-2 opacity-40" />
 
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <p className="text-gray-400 text-sm mb-4">
-            TESTIMONIALS
-          </p>
-
-          <h2 className="text-5xl md:text-7xl font-light leading-tight">
-            What our customer
-            <br />
-            says About Us
+      <div className="relative max-w-7xl mx-auto z-10 space-y-16">
+        
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto space-y-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
+            <Quote className="w-3.5 h-3.5" />
+            <span>Client Endorsements</span>
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+            Trusted By Visionary Leaders <br />
+            <span className="gradient-text-cyan">Across Global Markets.</span>
           </h2>
-        </motion.div>
+        </div>
 
-        <div className="relative mt-28 min-h-[700px]">
-
-          {/* Floating Avatars */}
-
-          <motion.img
-            src={users[0].image}
-            alt=""
-            animate={{ y: [0, -20, 0] }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-            }}
-            className="absolute top-0 left-0 w-24 h-24 rounded-full object-cover shadow-xl"
-          />
-
-          <motion.img
-            src={users[1].image}
-            alt=""
-            animate={{ y: [0, 20, 0] }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-            }}
-            className="absolute top-10 right-0 w-24 h-24 rounded-full object-cover shadow-xl"
-          />
-
-          <motion.img
-            src={users[2].image}
-            alt=""
-            animate={{ y: [0, -15, 0] }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-            }}
-            className="absolute bottom-0 left-20 w-24 h-24 rounded-full object-cover shadow-xl"
-          />
-
-          <motion.img
-            src={users[3].image}
-            alt=""
-            animate={{ y: [0, 15, 0] }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-            }}
-            className="absolute bottom-10 right-20 w-24 h-24 rounded-full object-cover shadow-xl"
-          />
-
-          {/* Main Card */}
-
+        {/* Carousel Showcase Card */}
+        <div className="relative max-w-4xl mx-auto">
           <motion.div
-            initial={{
-              opacity: 0,
-              scale: 0.8,
-            }}
-            whileInView={{
-              opacity: 1,
-              scale: 1,
-            }}
-            transition={{
-              duration: 0.7,
-            }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto bg-white rounded-[40px] shadow-xl p-10 md:p-16 text-center"
+            key={current.id}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.4 }}
+            className="p-8 sm:p-12 rounded-3xl glass-card border border-white/15 backdrop-blur-2xl space-y-8 shadow-2xl"
           >
-
-            <div className="flex justify-center mb-8">
-              <img
-                src="https://randomuser.me/api/portraits/women/65.jpg"
-                alt=""
-                className="w-20 h-20 rounded-full object-cover"
-              />
+            {/* Top Bar Rating & Metric */}
+            <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/10">
+              <div className="flex items-center gap-1">
+                {[...Array(current.rating)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 text-amber-400 fill-amber-400" />
+                ))}
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold font-mono">
+                <TrendingUp className="w-3.5 h-3.5" />
+                <span>{current.metric}</span>
+              </div>
             </div>
 
-            <h3 className="text-2xl font-semibold mb-6">
-              Elementum delivered the site
-              within the timeline and exceeded
-              our expectations.
-            </h3>
+            {/* Testimonial Quote */}
+            <blockquote className="text-xl sm:text-2xl font-light text-slate-100 leading-relaxed italic">
+              "{current.content}"
+            </blockquote>
 
-            <p className="text-gray-500 leading-8">
-              Their team understood our goals,
-              translated our vision into an
-              outstanding digital experience,
-              and helped us grow our online
-              presence significantly.
-            </p>
+            {/* Client Info & Video Concept Button */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-4">
+              <div className="flex items-center gap-4">
+                <img
+                  src={current.avatar}
+                  alt={current.name}
+                  className="w-14 h-14 rounded-2xl object-cover border-2 border-cyan-500/30"
+                />
+                <div>
+                  <div className="text-base font-bold text-white font-heading flex items-center gap-2">
+                    <span>{current.name}</span>
+                    <CheckCircle className="w-4 h-4 text-cyan-400" title="Verified Client" />
+                  </div>
+                  <div className="text-xs text-slate-400">
+                    {current.role} • <span className="text-cyan-300 font-semibold">{current.company}</span>
+                  </div>
+                  <div className="text-[11px] text-slate-300 font-mono mt-0.5">
+                    Project: {current.project}
+                  </div>
+                </div>
+              </div>
 
-            <div className="mt-10">
-              <h4 className="font-semibold">
-                Olivia Parker
-              </h4>
-
-              <p className="text-gray-400 text-sm">
-                Marketing Director
-              </p>
+              {/* Video Case Study Button */}
+              <button
+                onClick={() => setShowVideoModal(true)}
+                className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 hover:border-cyan-400 text-xs font-semibold text-slate-200 transition"
+              >
+                <div className="w-6 h-6 rounded-full bg-cyan-500 flex items-center justify-center text-black">
+                  <Play className="w-3 h-3 fill-black ml-0.5" />
+                </div>
+                <span>Watch Story Video</span>
+              </button>
             </div>
 
           </motion.div>
 
+          {/* Navigation Buttons */}
+          <div className="flex items-center justify-center gap-4 mt-8">
+            <button
+              onClick={handlePrev}
+              className="p-3 rounded-full bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 transition"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <div className="text-xs font-mono text-slate-400">
+              0{activeIdx + 1} / 0{testimonials.length}
+            </div>
+            <button
+              onClick={handleNext}
+              className="p-3 rounded-full bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 transition"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-      </div>
+        {/* Video Modal Simulation */}
+        {showVideoModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <div className="relative w-full max-w-3xl bg-[#0f172a] border border-white/20 rounded-3xl p-6 space-y-4">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <span className="text-sm font-bold text-white font-heading">
+                  Video Case Study: {current.company}
+                </span>
+                <button
+                  onClick={() => setShowVideoModal(false)}
+                  className="p-2 rounded-full bg-white/10 text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
+              {/* Video Player Placeholder */}
+              <div className="relative aspect-video rounded-2xl bg-slate-900 border border-white/10 flex flex-col items-center justify-center space-y-3 overflow-hidden">
+                <div className="w-16 h-16 rounded-full bg-cyan-500 flex items-center justify-center text-black shadow-lg animate-pulse">
+                  <Play className="w-8 h-8 fill-black ml-1" />
+                </div>
+                <div className="text-xs font-mono text-cyan-300">
+                  Simulated HD Case Study Interview Playback
+                </div>
+                <div className="text-[11px] text-slate-400 text-center max-w-sm">
+                  "Elementum transformed our product trajectory and helped us raise our Series B."
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
     </section>
   );
 }
-
-export default Testimonials;
