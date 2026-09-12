@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Sparkles,
@@ -10,13 +10,52 @@ import {
   Cpu,
   Layers,
   Globe2,
+  Terminal,
+  Activity,
+  CheckCircle,
 } from "lucide-react";
 
 const stats = [
-  { value: "150+", label: "Products Launched", icon: Zap },
+  { value: "150+", label: "Products Delivered", icon: Zap },
   { value: "4.8x", label: "Avg Client Growth", icon: TrendingUp },
-  { value: "99.9%", label: "System Uptime", icon: ShieldCheck },
+  { value: "99.99%", label: "System Uptime", icon: ShieldCheck },
   { value: "24/7", label: "AI & Cloud Ops", icon: Cpu },
+];
+
+const consoleTabs = [
+  {
+    id: "ai",
+    label: "AI & Agents",
+    cmd: "$ elementum.ai_agents()",
+    logs: [
+      "> Compiling RAG Vector Knowledge Graphs...",
+      "> Optimization Score: 100/100 (Sub-50ms Latency)",
+      "> Security: SOC2 Encrypted & Guardrailed",
+    ],
+    metric: "99.4% Accuracy",
+  },
+  {
+    id: "spatial",
+    label: "Spatial 3D",
+    cmd: "$ elementum.spatial_webgpu()",
+    logs: [
+      "> Initializing WebGPU Shader Ray-Tracer...",
+      "> Target Render Speed: 60 FPS Locked",
+      "> Instant AR Quick-Look Camera Ready",
+    ],
+    metric: "60 FPS Render",
+  },
+  {
+    id: "web",
+    label: "Edge Scale",
+    cmd: "$ elementum.edge_deploy()",
+    logs: [
+      "> Deploying React 19 Streaming Architecture...",
+      "> Global Edge CDN Latency: 12ms",
+      "> Zero Downtime Blue-Green Deployment Active",
+    ],
+    metric: "100/100 Lighthouse",
+  },
 ];
 
 const techStackLogos = [
@@ -29,12 +68,23 @@ const techStackLogos = [
 ];
 
 export default function Hero({ onOpenEstimator }) {
+  const [activeConsoleTab, setActiveConsoleTab] = useState(consoleTabs[0]);
+  const [latencyTick, setLatencyTick] = useState(12);
+
+  // Simulated live latency pulse
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLatencyTick(Math.floor(11 + Math.random() * 4));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section
       id="home"
       className="relative min-h-screen pt-32 pb-20 px-4 sm:px-6 lg:px-8 flex flex-col justify-center overflow-hidden"
     >
-      {/* Ambient background glow accents */}
+      {/* Dynamic Ambient floating background glow accents */}
       <div className="ambient-glow-1" />
       <div className="ambient-glow-2" />
 
@@ -48,36 +98,36 @@ export default function Hero({ onOpenEstimator }) {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 space-y-8 text-center lg:text-left"
           >
             {/* Status Pill Badge */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold tracking-wide">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full badge-theme text-xs font-semibold tracking-wide shadow-md">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-400"></span>
               </span>
               <span>Available for Q3/Q4 Project Inquiries</span>
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400 ml-1" />
+              <Sparkles className="w-3.5 h-3.5 ml-1" />
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] text-white">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] text-white font-heading">
               We Craft <br />
-              <span className="gradient-text-cyan">Next-Gen AI Apps</span> <br />
-              & Spatial Digital Experiences.
+              <span className="gradient-text-theme">Next-Gen AI Apps</span> <br />
+              &amp; Spatial Digital Products.
             </h1>
 
             {/* Subheading */}
             <p className="max-w-2xl mx-auto lg:mx-0 text-base sm:text-lg text-slate-300 font-normal leading-relaxed">
-              Elementum is an elite creative tech studio fusing cutting-edge AI pipelines, high-performance Web architecture, and immersive UI/UX design into category-defining digital products.
+              Elementum is an elite creative tech studio fusing cutting-edge AI pipelines, high-performance Web architecture, and immersive UI/UX design into category-defining digital experiences.
             </p>
 
             {/* CTAs */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
               <a
                 href="#contact"
-                className="group flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 text-white font-bold text-sm shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] active:scale-95 transition-all"
+                className="btn-theme-primary group flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-sm shadow-2xl transition-all"
               >
                 <span>Start Your Project</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -85,7 +135,7 @@ export default function Hero({ onOpenEstimator }) {
 
               <button
                 onClick={onOpenEstimator}
-                className="flex items-center gap-2.5 px-7 py-4 rounded-2xl bg-slate-900/80 hover:bg-slate-800/80 border border-slate-700/60 text-slate-200 font-semibold text-sm backdrop-blur-xl transition-all hover:scale-[1.02] active:scale-95"
+                className="flex items-center gap-2.5 px-7 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 font-semibold text-sm backdrop-blur-2xl transition-all hover:scale-[1.02] active:scale-95 shadow-lg"
               >
                 <Calculator className="w-4 h-4 text-cyan-400" />
                 <span>Estimate Project Cost</span>
@@ -111,57 +161,80 @@ export default function Hero({ onOpenEstimator }) {
 
           {/* Hero Visual Card / Interactive Preview Right Column */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.2 }}
+            initial={{ opacity: 0, scale: 0.94, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5"
           >
             <div className="relative group">
-              {/* Glow border gradient backdrop */}
-              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-500 via-purple-500 to-indigo-500 opacity-30 group-hover:opacity-50 blur-xl transition duration-500" />
+              {/* Glow border backdrop */}
+              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500 opacity-25 group-hover:opacity-45 blur-2xl transition duration-700" />
 
               {/* Main Card Console */}
-              <div className="relative rounded-3xl bg-[#0f172a]/90 border border-white/15 p-6 sm:p-8 backdrop-blur-2xl shadow-2xl space-y-6">
+              <div className="relative rounded-3xl glass-card p-6 sm:p-8 space-y-6 shadow-2xl">
                 
-                {/* Console Bar Header */}
+                {/* Console Header & Tabs */}
                 <div className="flex items-center justify-between pb-4 border-b border-white/10">
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
-                    <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
-                    <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
+                    <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block shadow-sm" />
+                    <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block shadow-sm" />
+                    <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block shadow-sm" />
                   </div>
-                  <span className="text-[11px] font-mono text-cyan-400 bg-cyan-950/50 border border-cyan-800/40 px-2.5 py-0.5 rounded-full">
-                    v2.4 Live Studio Engine
-                  </span>
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-cyan-400 bg-cyan-950/40 border border-cyan-800/40 px-3 py-1 rounded-full">
+                    <Terminal className="w-3 h-3 text-cyan-400" />
+                    <span>v2.5 Live Telemetry</span>
+                  </div>
                 </div>
 
-                {/* Simulated Interactive Studio Code / Metric Panel */}
+                {/* Console Tab Switcher */}
+                <div className="flex gap-1.5 p-1 rounded-xl bg-white/5 border border-white/10 font-mono text-xs">
+                  {consoleTabs.map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveConsoleTab(tab)}
+                      className={`flex-1 py-1.5 px-2 rounded-lg transition-all text-[11px] ${
+                        activeConsoleTab.id === tab.id
+                          ? "bg-white/15 text-white font-bold shadow-md"
+                          : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Simulated Interactive Studio Code Console */}
                 <div className="space-y-4">
-                  <div className="p-4 rounded-2xl bg-[#080d1a] border border-white/5 space-y-3 font-mono text-xs">
+                  <div className="p-4 rounded-2xl bg-[#060913] border border-white/10 space-y-3 font-mono text-xs shadow-inner">
                     <div className="flex items-center justify-between text-slate-400">
-                      <span className="text-cyan-400">$ elementum.deploy()</span>
+                      <span className="text-cyan-400 font-bold">{activeConsoleTab.cmd}</span>
                       <span className="text-emerald-400 flex items-center gap-1">
                         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                         Active
                       </span>
                     </div>
-                    <div className="text-slate-300 leading-relaxed">
-                      &gt; Compiling AI Agents &amp; Spatial Web Interfaces...<br />
-                      &gt; Optimization Score: <span className="text-emerald-400 font-bold">100/100</span><br />
-                      &gt; Latency: <span className="text-cyan-300">12ms</span> | Security: <span className="text-purple-300">Encrypted</span>
+                    <div className="text-slate-300 leading-relaxed text-[11.5px] space-y-1">
+                      {activeConsoleTab.logs.map((log, idx) => (
+                        <div key={idx}>{log}</div>
+                      ))}
+                      <div className="pt-1 text-slate-400 flex items-center justify-between">
+                        <span>Latency: <span className="text-cyan-300 font-bold">{latencyTick}ms</span></span>
+                        <span className="text-purple-300 font-bold">{activeConsoleTab.metric}</span>
+                      </div>
                     </div>
                   </div>
 
                   {/* Interactive Tech Badge List */}
                   <div>
-                    <div className="text-xs uppercase font-bold text-slate-400 mb-3 tracking-wider font-heading">
-                      Studio Core Stack
+                    <div className="text-[11px] uppercase font-bold text-slate-400 mb-3 tracking-wider font-heading flex items-center justify-between">
+                      <span>Studio Core Stack</span>
+                      <Activity className="w-3.5 h-3.5 text-cyan-400" />
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       {techStackLogos.map((item, idx) => (
                         <div
                           key={idx}
-                          className="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/40 hover:bg-white/10 transition-all cursor-default"
+                          className="p-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/40 hover:bg-white/10 transition-all cursor-default"
                         >
                           <div className="text-xs font-bold text-white">{item.name}</div>
                           <div className="text-[10px] text-slate-400">{item.tag}</div>
@@ -194,7 +267,7 @@ export default function Hero({ onOpenEstimator }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 p-6 sm:p-8 rounded-3xl bg-slate-900/60 border border-white/10 backdrop-blur-xl"
+          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 p-6 sm:p-8 rounded-3xl glass-panel shadow-2xl"
         >
           {stats.map((stat, idx) => {
             const Icon = stat.icon;
@@ -203,11 +276,11 @@ export default function Hero({ onOpenEstimator }) {
                 key={idx}
                 className="flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition-colors"
               >
-                <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
+                <div className="w-12 h-12 rounded-2xl badge-theme flex items-center justify-center shrink-0 shadow-md">
                   <Icon className="w-6 h-6" />
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-white font-heading">
+                  <div className="text-2xl sm:text-3xl font-black text-white font-heading">
                     {stat.value}
                   </div>
                   <div className="text-xs text-slate-400 font-medium">{stat.label}</div>

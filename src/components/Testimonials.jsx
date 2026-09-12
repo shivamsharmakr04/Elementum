@@ -72,13 +72,13 @@ export default function Testimonials() {
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-theme text-xs font-semibold uppercase tracking-wider font-mono">
             <Quote className="w-3.5 h-3.5" />
             <span>Client Endorsements</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+          <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight font-heading">
             Trusted By Visionary Leaders <br />
-            <span className="gradient-text-cyan">Across Global Markets.</span>
+            <span className="gradient-text-theme">Across Global Markets.</span>
           </h2>
         </div>
 
@@ -89,8 +89,8 @@ export default function Testimonials() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.4 }}
-            className="p-8 sm:p-12 rounded-3xl glass-card border border-white/15 backdrop-blur-2xl space-y-8 shadow-2xl"
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="p-8 sm:p-12 rounded-3xl glass-panel space-y-8 shadow-2xl border border-white/15"
           >
             {/* Top Bar Rating & Metric */}
             <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/10">
@@ -116,15 +116,15 @@ export default function Testimonials() {
                 <img
                   src={current.avatar}
                   alt={current.name}
-                  className="w-14 h-14 rounded-2xl object-cover border-2 border-cyan-500/30"
+                  className="w-14 h-14 rounded-2xl object-cover border-2 border-[var(--accent-border)] shadow-md"
                 />
                 <div>
                   <div className="text-base font-bold text-white font-heading flex items-center gap-2">
                     <span>{current.name}</span>
-                    <CheckCircle className="w-4 h-4 text-cyan-400" title="Verified Client" />
+                    <CheckCircle className="w-4 h-4 text-[var(--accent-light)]" title="Verified Client" />
                   </div>
                   <div className="text-xs text-slate-400">
-                    {current.role} • <span className="text-cyan-300 font-semibold">{current.company}</span>
+                    {current.role} • <span className="text-[var(--accent-light)] font-semibold">{current.company}</span>
                   </div>
                   <div className="text-[11px] text-slate-300 font-mono mt-0.5">
                     Project: {current.project}
@@ -135,10 +135,10 @@ export default function Testimonials() {
               {/* Video Case Study Button */}
               <button
                 onClick={() => setShowVideoModal(true)}
-                className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 hover:border-cyan-400 text-xs font-semibold text-slate-200 transition"
+                className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--accent-border)] text-xs font-semibold text-slate-200 transition shadow-md"
               >
-                <div className="w-6 h-6 rounded-full bg-cyan-500 flex items-center justify-center text-black">
-                  <Play className="w-3 h-3 fill-black ml-0.5" />
+                <div className="w-6 h-6 rounded-full btn-theme-primary flex items-center justify-center text-white">
+                  <Play className="w-3 h-3 fill-white ml-0.5" />
                 </div>
                 <span>Watch Story Video</span>
               </button>
@@ -150,7 +150,7 @@ export default function Testimonials() {
           <div className="flex items-center justify-center gap-4 mt-8">
             <button
               onClick={handlePrev}
-              className="p-3 rounded-full bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 transition"
+              className="p-3 rounded-full bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 transition shadow-md"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -159,7 +159,7 @@ export default function Testimonials() {
             </div>
             <button
               onClick={handleNext}
-              className="p-3 rounded-full bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 transition"
+              className="p-3 rounded-full bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 transition shadow-md"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -169,7 +169,7 @@ export default function Testimonials() {
         {/* Video Modal Simulation */}
         {showVideoModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-            <div className="relative w-full max-w-3xl bg-[#0f172a] border border-white/20 rounded-3xl p-6 space-y-4">
+            <div className="relative w-full max-w-3xl bg-[#090d18] border border-white/20 rounded-3xl p-6 space-y-4 shadow-2xl">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <span className="text-sm font-bold text-white font-heading">
                   Video Case Study: {current.company}
@@ -183,11 +183,11 @@ export default function Testimonials() {
               </div>
 
               {/* Video Player Placeholder */}
-              <div className="relative aspect-video rounded-2xl bg-slate-900 border border-white/10 flex flex-col items-center justify-center space-y-3 overflow-hidden">
-                <div className="w-16 h-16 rounded-full bg-cyan-500 flex items-center justify-center text-black shadow-lg animate-pulse">
-                  <Play className="w-8 h-8 fill-black ml-1" />
+              <div className="relative aspect-video rounded-2xl bg-[#050811] border border-white/10 flex flex-col items-center justify-center space-y-3 overflow-hidden">
+                <div className="w-16 h-16 rounded-full btn-theme-primary flex items-center justify-center text-white shadow-xl animate-pulse">
+                  <Play className="w-8 h-8 fill-white ml-1" />
                 </div>
-                <div className="text-xs font-mono text-cyan-300">
+                <div className="text-xs font-mono text-[var(--accent-light)] font-bold">
                   Simulated HD Case Study Interview Playback
                 </div>
                 <div className="text-[11px] text-slate-400 text-center max-w-sm">

@@ -95,14 +95,14 @@ export default function About() {
         {/* Header & Story */}
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-theme text-xs font-semibold uppercase tracking-wider font-mono">
               <Compass className="w-3.5 h-3.5" />
               <span>Inside Elementum Studio</span>
             </div>
             
-            <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+            <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight font-heading">
               We Believe Progress Happens <br />
-              <span className="gradient-text-cyan">When You Refuse To Play Safe.</span>
+              <span className="gradient-text-theme">When You Refuse To Play Safe.</span>
             </h2>
 
             <p className="text-slate-300 text-base leading-relaxed">
@@ -115,15 +115,15 @@ export default function About() {
 
             <div className="pt-4 grid grid-cols-3 gap-4 border-t border-white/10 text-center">
               <div>
-                <div className="text-3xl font-extrabold text-white font-heading">5+</div>
+                <div className="text-3xl font-black text-white font-heading">5+</div>
                 <div className="text-[11px] text-slate-400">Years Studio Experience</div>
               </div>
               <div>
-                <div className="text-3xl font-extrabold text-cyan-400 font-heading">150+</div>
+                <div className="text-3xl font-black text-[var(--accent-light)] font-heading">150+</div>
                 <div className="text-[11px] text-slate-400">Global Deployments</div>
               </div>
               <div>
-                <div className="text-3xl font-extrabold text-purple-400 font-heading">12</div>
+                <div className="text-3xl font-black text-purple-400 font-heading">12</div>
                 <div className="text-[11px] text-slate-400">Design &amp; Code Awards</div>
               </div>
             </div>
@@ -136,10 +136,10 @@ export default function About() {
               return (
                 <div
                   key={idx}
-                  className="p-6 rounded-3xl glass-card border border-white/10 space-y-3 hover:border-cyan-500/30 transition-all"
+                  className="p-6 rounded-3xl glass-card border border-white/10 space-y-3 hover:border-[var(--accent-border)] transition-all"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-                    <Icon className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-xl badge-theme flex items-center justify-center shadow-md">
+                    <Icon className="w-5 h-5 text-[var(--accent-light)]" />
                   </div>
                   <h4 className="text-lg font-bold text-white font-heading">
                     {p.title}
@@ -154,7 +154,7 @@ export default function About() {
         </div>
 
         {/* Studio Tech Stack Matrix */}
-        <div className="p-8 sm:p-12 rounded-3xl bg-slate-900/80 border border-white/10 backdrop-blur-2xl space-y-8">
+        <div className="p-8 sm:p-12 rounded-3xl glass-panel space-y-8 shadow-2xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h3 className="text-2xl font-bold text-white font-heading">
@@ -172,9 +172,9 @@ export default function About() {
                   <button
                     key={cat}
                     onClick={() => setTechCategory(cat)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition ${
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition ${
                       techCategory === cat
-                        ? "bg-cyan-500 text-black font-bold"
+                        ? "btn-theme-primary shadow-md font-bold text-white"
                         : "bg-white/5 text-slate-300 hover:text-white"
                     }`}
                   >
@@ -189,7 +189,7 @@ export default function About() {
             {filteredTech.map((tech, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-cyan-500/30 transition cursor-default"
+                className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--accent-border)] transition cursor-default shadow-sm"
               >
                 <span className="text-xl">{tech.icon}</span>
                 <div>
@@ -204,7 +204,7 @@ export default function About() {
         {/* Team Spotlights */}
         <div className="space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <h3 className="text-3xl font-extrabold text-white font-heading">
+            <h3 className="text-3xl font-black text-white font-heading">
               Meet The Thinkers &amp; Doers
             </h3>
             <p className="text-xs text-slate-300">
@@ -216,9 +216,9 @@ export default function About() {
             {teamMembers.map((member, idx) => (
               <div
                 key={idx}
-                className="group p-5 rounded-3xl glass-card border border-white/10 space-y-4 text-center hover:border-cyan-500/40 transition-all"
+                className="group p-5 rounded-3xl glass-card-interactive border border-white/10 space-y-4 text-center hover:border-[var(--accent-border)] transition-all"
               >
-                <div className="relative w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-cyan-500/30 group-hover:scale-105 transition-transform">
+                <div className="relative w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-[var(--accent-border)] group-hover:scale-105 transition-transform shadow-lg">
                   <img
                     src={member.avatar}
                     alt={member.name}
@@ -229,7 +229,7 @@ export default function About() {
                   <h4 className="text-lg font-bold text-white font-heading">
                     {member.name}
                   </h4>
-                  <p className="text-xs text-cyan-400 font-mono">{member.role}</p>
+                  <p className="text-xs text-[var(--accent-light)] font-mono font-semibold">{member.role}</p>
                 </div>
                 <p className="text-xs text-slate-300 leading-relaxed">
                   {member.bio}

@@ -25,7 +25,7 @@ function App() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#0b0f19] text-slate-100 selection:bg-cyan-500 selection:text-black theme-${activeTheme}`}>
+    <div className={`min-h-screen bg-[#050811] text-slate-100 selection:bg-cyan-500 selection:text-black theme-${activeTheme}`}>
       {/* Glassmorphic Navbar */}
       <Navbar
         onOpenEstimator={() => setIsEstimatorOpen(true)}

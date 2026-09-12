@@ -88,8 +88,8 @@ export default function ContactWizard({ prefilledEstimate }) {
     setSubmitted(true);
     // Fire celebratory confetti!
     confetti({
-      particleCount: 100,
-      spread: 70,
+      particleCount: 120,
+      spread: 80,
       origin: { y: 0.6 },
     });
   };
@@ -102,13 +102,13 @@ export default function ContactWizard({ prefilledEstimate }) {
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-theme text-xs font-semibold uppercase tracking-wider font-mono">
             <Mail className="w-3.5 h-3.5" />
             <span>Interactive Project Configurator</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+          <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight font-heading">
             Ready To Build Something <br />
-            <span className="gradient-text-cyan">Extraordinary Together?</span>
+            <span className="gradient-text-theme">Extraordinary Together?</span>
           </h2>
           <p className="text-slate-300 text-sm max-w-xl mx-auto">
             Configure your project parameters below. Our studio team responds within 12 hours with a detailed scope proposal.
@@ -116,7 +116,7 @@ export default function ContactWizard({ prefilledEstimate }) {
         </div>
 
         {/* Multi-step Form Container */}
-        <div className="relative rounded-3xl glass-card border border-white/15 p-6 sm:p-10 backdrop-blur-2xl shadow-2xl space-y-8">
+        <div className="relative rounded-3xl glass-panel p-6 sm:p-10 shadow-2xl space-y-8 border border-white/15">
           
           {!submitted ? (
             <>
@@ -124,17 +124,17 @@ export default function ContactWizard({ prefilledEstimate }) {
               <div className="space-y-2">
                 <div className="flex justify-between text-xs font-mono text-slate-400">
                   <span>Step 0{step} of 03</span>
-                  <span className="text-cyan-400 font-semibold">
+                  <span className="text-[var(--accent-light)] font-bold">
                     {step === 1 && "Select Services"}
                     {step === 2 && "Scope & Budget"}
                     {step === 3 && "Contact Details"}
                   </span>
                 </div>
-                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500"
+                    className="h-full bg-gradient-to-r from-[var(--accent-color)] via-indigo-500 to-purple-500"
                     animate={{ width: `${(step / 3) * 100}%` }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                   />
                 </div>
               </div>
@@ -147,6 +147,7 @@ export default function ContactWizard({ prefilledEstimate }) {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
                     className="space-y-6"
                   >
                     <div className="space-y-1">
@@ -168,12 +169,12 @@ export default function ContactWizard({ prefilledEstimate }) {
                             onClick={() => toggleService(service)}
                             className={`flex items-center justify-between p-4 rounded-2xl border text-xs text-left transition-all ${
                               isSelected
-                                ? "bg-cyan-500/15 border-cyan-500 text-white font-semibold shadow-lg shadow-cyan-950/40"
+                                ? "badge-theme font-bold shadow-md"
                                 : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
                             }`}
                           >
                             <span>{service}</span>
-                            {isSelected && <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 ml-2" />}
+                            {isSelected && <CheckCircle2 className="w-4 h-4 text-[var(--accent-light)] shrink-0 ml-2" />}
                           </button>
                         );
                       })}
@@ -187,6 +188,7 @@ export default function ContactWizard({ prefilledEstimate }) {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
                     className="space-y-8"
                   >
                     {/* Budget Selection */}
@@ -202,7 +204,7 @@ export default function ContactWizard({ prefilledEstimate }) {
                             onClick={() => setSelectedBudget(b)}
                             className={`p-4 rounded-2xl border text-xs font-semibold text-center transition-all ${
                               selectedBudget === b
-                                ? "bg-purple-500/20 border-purple-500 text-white shadow-lg"
+                                ? "bg-purple-500/20 border-purple-500 text-white font-bold shadow-lg"
                                 : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
                             }`}
                           >
@@ -225,7 +227,7 @@ export default function ContactWizard({ prefilledEstimate }) {
                             onClick={() => setSelectedTimeline(t)}
                             className={`p-4 rounded-2xl border text-xs font-semibold text-center transition-all ${
                               selectedTimeline === t
-                                ? "bg-emerald-500/20 border-emerald-500 text-white shadow-lg"
+                                ? "bg-emerald-500/20 border-emerald-500 text-white font-bold shadow-lg"
                                 : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
                             }`}
                           >
@@ -243,6 +245,7 @@ export default function ContactWizard({ prefilledEstimate }) {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
                     className="space-y-6"
                   >
                     <div className="space-y-1">
@@ -258,7 +261,7 @@ export default function ContactWizard({ prefilledEstimate }) {
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
                           <label className="text-xs text-slate-300 font-medium flex items-center gap-1.5">
-                            <User className="w-3.5 h-3.5 text-cyan-400" /> Full Name *
+                            <User className="w-3.5 h-3.5 text-[var(--accent-light)]" /> Full Name *
                           </label>
                           <input
                             type="text"
@@ -266,13 +269,13 @@ export default function ContactWizard({ prefilledEstimate }) {
                             placeholder="e.g. Sarah Jenkins"
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 transition"
+                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-[var(--accent-color)] transition"
                           />
                         </div>
 
                         <div className="space-y-1.5">
                           <label className="text-xs text-slate-300 font-medium flex items-center gap-1.5">
-                            <Mail className="w-3.5 h-3.5 text-cyan-400" /> Work Email *
+                            <Mail className="w-3.5 h-3.5 text-[var(--accent-light)]" /> Work Email *
                           </label>
                           <input
                             type="email"
@@ -280,40 +283,40 @@ export default function ContactWizard({ prefilledEstimate }) {
                             placeholder="sarah@company.com"
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 transition"
+                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-[var(--accent-color)] transition"
                           />
                         </div>
                       </div>
 
                       <div className="space-y-1.5">
                         <label className="text-xs text-slate-300 font-medium flex items-center gap-1.5">
-                          <Building className="w-3.5 h-3.5 text-cyan-400" /> Organization / Company Name
+                          <Building className="w-3.5 h-3.5 text-[var(--accent-light)]" /> Organization / Company Name
                         </label>
                         <input
                           type="text"
                           placeholder="e.g. Synthetix Inc."
                           value={formData.company}
                           onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 transition"
+                          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-[var(--accent-color)] transition"
                         />
                       </div>
 
                       <div className="space-y-1.5">
                         <label className="text-xs text-slate-300 font-medium flex items-center gap-1.5">
-                          <FileText className="w-3.5 h-3.5 text-cyan-400" /> Project Brief Overview
+                          <FileText className="w-3.5 h-3.5 text-[var(--accent-light)]" /> Project Brief Overview
                         </label>
                         <textarea
                           rows={4}
                           placeholder="Tell us about your product goals, target audience, or specific tech requirements..."
                           value={formData.details}
                           onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 transition"
+                          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-[var(--accent-color)] transition"
                         />
                       </div>
 
                       <button
                         type="submit"
-                        className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 text-white font-bold text-sm shadow-xl shadow-cyan-500/25 hover:scale-[1.01] transition"
+                        className="btn-theme-primary w-full flex items-center justify-center gap-2 py-4 rounded-2xl text-white font-bold text-sm shadow-xl"
                       >
                         <Send className="w-4 h-4" />
                         <span>Submit Project Inquiry</span>
@@ -343,7 +346,7 @@ export default function ContactWizard({ prefilledEstimate }) {
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="flex items-center gap-2 px-6 py-3 rounded-xl bg-cyan-500 text-black font-bold text-xs hover:bg-cyan-400 transition"
+                    className="btn-theme-primary flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold text-xs shadow-md"
                   >
                     <span>Continue</span>
                     <ArrowRight className="w-4 h-4" />
@@ -356,25 +359,26 @@ export default function ContactWizard({ prefilledEstimate }) {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 22 }}
               className="text-center py-12 space-y-6"
             >
-              <div className="w-20 h-20 mx-auto rounded-full bg-cyan-500/20 border-2 border-cyan-500 flex items-center justify-center text-cyan-400">
+              <div className="w-20 h-20 mx-auto rounded-full badge-theme flex items-center justify-center text-[var(--accent-light)] shadow-xl">
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-3xl font-extrabold text-white font-heading">
+                <h3 className="text-3xl font-black text-white font-heading">
                   Inquiry Submitted Successfully!
                 </h3>
                 <p className="text-sm text-slate-300 max-w-md mx-auto">
-                  Thank you, <span className="text-cyan-400 font-semibold">{formData.name || "Partner"}</span>. Our lead studio architect is reviewing your configuration and will follow up at <span className="text-cyan-400 font-semibold">{formData.email || "your email"}</span> within 12 hours.
+                  Thank you, <span className="text-[var(--accent-light)] font-bold">{formData.name || "Partner"}</span>. Our lead studio architect is reviewing your configuration and will follow up at <span className="text-[var(--accent-light)] font-bold">{formData.email || "your email"}</span> within 12 hours.
                 </p>
               </div>
 
               {/* Summary Pill */}
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 max-w-md mx-auto text-left text-xs space-y-2 font-mono text-slate-300">
-                <div>Selected Services: <span className="text-white">{selectedServices.join(", ")}</span></div>
-                <div>Budget Range: <span className="text-purple-300">{selectedBudget}</span></div>
-                <div>Launch Speed: <span className="text-emerald-400">{selectedTimeline}</span></div>
+              <div className="p-4 rounded-2xl bg-[#050811] border border-white/10 max-w-md mx-auto text-left text-xs space-y-2 font-mono text-slate-300 shadow-inner">
+                <div>Selected Services: <span className="text-white font-semibold">{selectedServices.join(", ")}</span></div>
+                <div>Budget Range: <span className="text-purple-300 font-semibold">{selectedBudget}</span></div>
+                <div>Launch Speed: <span className="text-emerald-400 font-semibold">{selectedTimeline}</span></div>
               </div>
 
               <button

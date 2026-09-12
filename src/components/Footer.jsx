@@ -24,7 +24,7 @@ export default function Footer() {
   };
 
   return (
-    <footer id="footer" className="relative bg-[#070a12] border-t border-white/10 pt-20 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden text-slate-400">
+    <footer id="footer" className="relative bg-[#03050c] border-t border-white/10 pt-20 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden text-slate-400">
       
       <div className="relative max-w-7xl mx-auto z-10 space-y-16">
         
@@ -53,11 +53,11 @@ export default function Footer() {
                   placeholder="Enter your executive email..."
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="flex-grow px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 transition"
+                  className="flex-grow px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-[var(--accent-color)] transition"
                 />
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-white font-bold text-xs shrink-0 shadow-lg hover:scale-105 transition"
+                  className="btn-theme-primary px-6 py-3 rounded-2xl text-white font-bold text-xs shrink-0 shadow-lg"
                 >
                   Subscribe
                 </button>
@@ -78,13 +78,11 @@ export default function Footer() {
           {/* Brand Col */}
           <div className="col-span-2 space-y-4">
             <a href="#home" className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-purple-600 p-[1px]">
-                <div className="w-full h-full bg-[#0b0f19] rounded-[7px] flex items-center justify-center">
-                  <Sparkles className="w-4 h-4 text-cyan-400" />
-                </div>
+              <div className="w-8 h-8 rounded-lg badge-theme flex items-center justify-center shadow-md">
+                <Sparkles className="w-4 h-4 text-[var(--accent-light)]" />
               </div>
-              <span className="text-lg font-bold text-white font-heading tracking-tight">
-                ELEMENTUM<span className="text-cyan-400">.</span>
+              <span className="text-lg font-black text-white font-heading tracking-tight">
+                ELEMENTUM<span className="text-[var(--accent-light)]">.</span>
               </span>
             </a>
             <p className="text-slate-400 max-w-sm leading-relaxed">
@@ -109,11 +107,11 @@ export default function Footer() {
               Capabilities
             </h4>
             <ul className="space-y-2">
-              <li><a href="#services" className="hover:text-cyan-400 transition">AI Engineering</a></li>
-              <li><a href="#services" className="hover:text-cyan-400 transition">Web Architecture</a></li>
-              <li><a href="#services" className="hover:text-cyan-400 transition">Spatial 3D &amp; WebGPU</a></li>
-              <li><a href="#services" className="hover:text-cyan-400 transition">Design Systems</a></li>
-              <li><a href="#services" className="hover:text-cyan-400 transition">Mobile Ecosystems</a></li>
+              <li><a href="#services" className="hover:text-[var(--accent-light)] transition">AI Engineering</a></li>
+              <li><a href="#services" className="hover:text-[var(--accent-light)] transition">Web Architecture</a></li>
+              <li><a href="#services" className="hover:text-[var(--accent-light)] transition">Spatial 3D &amp; WebGPU</a></li>
+              <li><a href="#services" className="hover:text-[var(--accent-light)] transition">Design Systems</a></li>
+              <li><a href="#services" className="hover:text-[var(--accent-light)] transition">Mobile Ecosystems</a></li>
             </ul>
           </div>
 
@@ -123,10 +121,10 @@ export default function Footer() {
               Selected Works
             </h4>
             <ul className="space-y-2">
-              <li><a href="#portfolio" className="hover:text-cyan-400 transition">Synthetix AI Copilot</a></li>
-              <li><a href="#portfolio" className="hover:text-cyan-400 transition">Nexus 3D Commerce</a></li>
-              <li><a href="#portfolio" className="hover:text-cyan-400 transition">Aura Vault Protocol</a></li>
-              <li><a href="#portfolio" className="hover:text-cyan-400 transition">Pulse Health OS</a></li>
+              <li><a href="#portfolio" className="hover:text-[var(--accent-light)] transition">Synthetix AI Copilot</a></li>
+              <li><a href="#portfolio" className="hover:text-[var(--accent-light)] transition">Nexus 3D Commerce</a></li>
+              <li><a href="#portfolio" className="hover:text-[var(--accent-light)] transition">Aura Vault Protocol</a></li>
+              <li><a href="#portfolio" className="hover:text-[var(--accent-light)] transition">Pulse Health OS</a></li>
             </ul>
           </div>
 
@@ -136,10 +134,10 @@ export default function Footer() {
               Studio
             </h4>
             <ul className="space-y-2">
-              <li><a href="#about" className="hover:text-cyan-400 transition">Manifesto &amp; Team</a></li>
-              <li><a href="#testimonials" className="hover:text-cyan-400 transition">Client Case Studies</a></li>
-              <li><a href="#faq" className="hover:text-cyan-400 transition">FAQ &amp; Pricing</a></li>
-              <li><a href="#contact" className="hover:text-cyan-400 transition">Project Calculator</a></li>
+              <li><a href="#about" className="hover:text-[var(--accent-light)] transition">Manifesto &amp; Team</a></li>
+              <li><a href="#testimonials" className="hover:text-[var(--accent-light)] transition">Client Case Studies</a></li>
+              <li><a href="#faq" className="hover:text-[var(--accent-light)] transition">FAQ &amp; Pricing</a></li>
+              <li><a href="#contact" className="hover:text-[var(--accent-light)] transition">Project Calculator</a></li>
             </ul>
           </div>
 

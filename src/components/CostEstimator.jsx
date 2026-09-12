@@ -96,13 +96,14 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-3xl bg-[#0f172a] border border-white/15 rounded-3xl overflow-hidden shadow-2xl space-y-0"
+        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+        className="relative w-full max-w-3xl bg-[#090d18] border border-white/15 rounded-3xl overflow-hidden shadow-2xl space-y-0"
       >
         {/* Header */}
-        <div className="p-6 sm:p-8 bg-[#131d33] border-b border-white/10 flex items-center justify-between">
+        <div className="p-6 sm:p-8 bg-[#0e1526] border-b border-white/10 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-              <Calculator className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-xl badge-theme flex items-center justify-center shadow-md">
+              <Calculator className="w-5 h-5 text-[var(--accent-light)]" />
             </div>
             <div>
               <h3 className="text-xl font-bold text-white font-heading">
@@ -128,7 +129,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
           {/* Step 1: Project Category */}
           <div className="space-y-3">
             <label className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading flex items-center gap-2">
-              <Layers className="w-4 h-4 text-cyan-400" />
+              <Layers className="w-4 h-4 text-[var(--accent-light)]" />
               <span>1. Select Project Category</span>
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -138,12 +139,12 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
                   onClick={() => setSelectedType(type)}
                   className={`p-3.5 rounded-2xl text-left border text-xs transition-all ${
                     selectedType.id === type.id
-                      ? "bg-cyan-500/15 border-cyan-500 text-white font-bold shadow-lg shadow-cyan-950/40"
+                      ? "badge-theme font-bold shadow-lg"
                       : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
                   }`}
                 >
                   <div className="font-semibold">{type.name}</div>
-                  <div className="text-[10px] text-cyan-400 font-mono mt-1">
+                  <div className="text-[10px] text-[var(--accent-light)] font-mono mt-1">
                     From ${type.basePrice.toLocaleString()}
                   </div>
                 </button>
@@ -154,7 +155,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
           {/* Step 2: Target Platform */}
           <div className="space-y-3">
             <label className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading flex items-center gap-2">
-              <Monitor className="w-4 h-4 text-cyan-400" />
+              <Monitor className="w-4 h-4 text-[var(--accent-light)]" />
               <span>2. Target Deployment Platform</span>
             </label>
             <div className="grid grid-cols-3 gap-2.5">
@@ -166,7 +167,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
                     onClick={() => setSelectedPlatform(plat)}
                     className={`flex items-center gap-2 p-3 rounded-2xl border text-xs font-semibold transition-all ${
                       selectedPlatform.id === plat.id
-                        ? "bg-purple-500/20 border-purple-500 text-white shadow-md"
+                        ? "bg-purple-500/20 border-purple-500 text-white shadow-md font-bold"
                         : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
                     }`}
                   >
@@ -181,7 +182,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
           {/* Step 3: Feature Modules */}
           <div className="space-y-3">
             <label className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading flex items-center gap-2">
-              <Zap className="w-4 h-4 text-cyan-400" />
+              <Zap className="w-4 h-4 text-[var(--accent-light)]" />
               <span>3. Add Advanced Feature Modules</span>
             </label>
             <div className="grid sm:grid-cols-2 gap-2.5">
@@ -193,7 +194,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
                     onClick={() => toggleAddon(addon.id)}
                     className={`flex items-center justify-between p-3.5 rounded-2xl border text-xs text-left transition-all ${
                       isSelected
-                        ? "bg-purple-500/15 border-purple-500 text-white font-medium"
+                        ? "bg-purple-500/15 border-purple-500 text-white font-semibold"
                         : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
                     }`}
                   >
@@ -209,7 +210,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
                       </div>
                       <span>{addon.name}</span>
                     </div>
-                    <span className="text-[11px] font-mono text-purple-300">
+                    <span className="text-[11px] font-mono text-purple-300 font-bold">
                       +${addon.price}
                     </span>
                   </button>
@@ -221,7 +222,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
           {/* Step 4: Velocity */}
           <div className="space-y-3">
             <label className="text-xs uppercase font-bold text-slate-400 tracking-wider font-heading flex items-center gap-2">
-              <Clock className="w-4 h-4 text-cyan-400" />
+              <Clock className="w-4 h-4 text-[var(--accent-light)]" />
               <span>4. Target Launch Velocity</span>
             </label>
             <div className="grid grid-cols-3 gap-2.5">
@@ -245,14 +246,14 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
           {/* Recommended Team Composition Preview */}
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 text-xs">
             <div className="text-slate-400 font-mono flex items-center gap-2">
-              <Users className="w-3.5 h-3.5 text-cyan-400" />
+              <Users className="w-3.5 h-3.5 text-[var(--accent-light)]" />
               <span>Recommended Studio Team:</span>
             </div>
             <div className="flex flex-wrap gap-2 pt-1">
               {selectedType.team.map((member, idx) => (
                 <span
                   key={idx}
-                  className="px-2.5 py-1 rounded-lg bg-slate-900 border border-white/10 text-slate-200 font-mono text-[11px]"
+                  className="px-2.5 py-1 rounded-lg bg-[#050811] border border-white/10 text-slate-200 font-mono text-[11px]"
                 >
                   {member}
                 </span>
@@ -263,13 +264,13 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
         </div>
 
         {/* Dynamic Calculation Footer */}
-        <div className="p-6 bg-[#090d16] border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="p-6 bg-[#050811] border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-6">
             <div>
               <div className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">
                 Estimated Budget
               </div>
-              <div className="text-2xl font-extrabold text-white font-heading gradient-text-cyan">
+              <div className="text-2xl font-black text-white font-heading gradient-text-theme">
                 ${estimatedPriceMin.toLocaleString()} – ${estimatedPriceMax.toLocaleString()}
               </div>
             </div>
@@ -285,7 +286,7 @@ export default function CostEstimator({ isOpen, onClose, onSelectEstimate }) {
 
           <button
             onClick={handleApplyEstimate}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 text-white font-bold text-xs shadow-xl hover:scale-105 transition"
+            className="w-full sm:w-auto btn-theme-primary flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl text-white font-bold text-xs shadow-xl"
           >
             <span>Lock Estimate &amp; Apply</span>
             <ArrowRight className="w-4 h-4" />

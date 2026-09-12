@@ -216,13 +216,13 @@ export default function Portfolio({ onSelectEstimate }) {
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider font-mono">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-theme text-xs font-semibold uppercase tracking-wider font-mono">
               <Layers className="w-3.5 h-3.5" />
               <span>Selected Portfolio</span>
             </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight font-heading">
               Products We’ve Built For <br />
-              <span className="gradient-text-cyan">Industry Pioneers.</span>
+              <span className="gradient-text-theme">Industry Pioneers.</span>
             </h2>
           </div>
 
@@ -231,11 +231,19 @@ export default function Portfolio({ onSelectEstimate }) {
             <Search className="absolute left-4 top-3.5 w-4 h-4 text-slate-400" />
             <input
               type="text"
-              placeholder="Search projects by tech (e.g. React, LLM, WebGPU)..."
+              placeholder="Search by tech stack (React, LLM, WebGPU)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#0f172a]/90 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 transition shadow-xl"
+              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#0a0f1d]/90 border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-[var(--accent-color)] transition shadow-xl"
             />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3.5 top-3.5 text-xs text-slate-400 hover:text-white"
+              >
+                Clear
+              </button>
+            )}
           </div>
         </div>
 
@@ -243,21 +251,22 @@ export default function Portfolio({ onSelectEstimate }) {
         <div className="flex flex-wrap gap-2.5 pb-2 border-b border-white/10">
           {categories.map((category) => {
             const count = getCategoryCount(category);
+            const isActive = activeCategory === category;
             return (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 ${
-                  activeCategory === category
-                    ? "bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 text-white shadow-lg shadow-cyan-500/25"
+                  isActive
+                    ? "btn-theme-primary shadow-lg"
                     : "bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10"
                 }`}
               >
                 <span>{category}</span>
                 <span
                   className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${
-                    activeCategory === category
-                      ? "bg-white/20 text-white"
+                    isActive
+                      ? "bg-white/20 text-white font-bold"
                       : "bg-white/10 text-slate-400"
                   }`}
                 >
@@ -278,10 +287,10 @@ export default function Portfolio({ onSelectEstimate }) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                   key={project.id}
                   onClick={() => setSelectedProject(project)}
-                  className="group relative rounded-3xl glass-card overflow-hidden cursor-pointer flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300"
+                  className="group relative rounded-3xl glass-card-interactive overflow-hidden cursor-pointer flex flex-col justify-between"
                 >
                   {/* Thumbnail Image */}
                   <div className="relative h-64 overflow-hidden">
@@ -290,15 +299,15 @@ export default function Portfolio({ onSelectEstimate }) {
                       alt={project.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d1424] via-[#0d1424]/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#070b14] via-[#070b14]/40 to-transparent" />
 
                     {/* Metric Impact Tag */}
-                    <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0b0f19]/90 backdrop-blur-md border border-white/15 text-emerald-400 text-xs font-bold shadow-md">
+                    <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#050811]/90 backdrop-blur-md border border-white/15 text-emerald-400 text-xs font-bold shadow-md">
                       <TrendingUp className="w-3.5 h-3.5" />
                       <span>{project.impact}</span>
                     </div>
 
-                    <div className="absolute top-4 right-4 p-2 rounded-full bg-[#0b0f19]/80 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute top-4 right-4 p-2 rounded-full bg-[#050811]/80 text-white opacity-0 group-hover:opacity-100 transition-opacity">
                       <Maximize2 className="w-4 h-4" />
                     </div>
                   </div>
@@ -306,12 +315,12 @@ export default function Portfolio({ onSelectEstimate }) {
                   {/* Details */}
                   <div className="p-6 space-y-4 flex-grow flex flex-col justify-between">
                     <div className="space-y-2">
-                      <div className="flex items-center justify-between text-xs text-cyan-400 font-mono">
+                      <div className="flex items-center justify-between text-xs text-[var(--accent-light)] font-mono font-semibold">
                         <span>{project.category}</span>
                         <span>{project.year}</span>
                       </div>
 
-                      <h3 className="text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors font-heading">
+                      <h3 className="text-2xl font-bold text-white group-hover:text-[var(--accent-light)] transition-colors font-heading">
                         {project.title}
                       </h3>
 
@@ -338,7 +347,7 @@ export default function Portfolio({ onSelectEstimate }) {
           </motion.div>
         ) : (
           /* Empty Search Results State */
-          <div className="text-center py-16 p-8 rounded-3xl bg-slate-900/60 border border-white/10 space-y-4 max-w-md mx-auto">
+          <div className="text-center py-16 p-8 rounded-3xl glass-panel space-y-4 max-w-md mx-auto shadow-2xl">
             <Layers className="w-10 h-10 text-slate-500 mx-auto" />
             <h4 className="text-lg font-bold text-white font-heading">
               No matching projects found
@@ -351,7 +360,7 @@ export default function Portfolio({ onSelectEstimate }) {
                 setSearchQuery("");
                 setActiveCategory("All");
               }}
-              className="px-4 py-2 rounded-xl bg-cyan-500 text-black font-bold text-xs hover:bg-cyan-400 transition"
+              className="btn-theme-primary px-5 py-2.5 rounded-xl font-bold text-xs shadow-md"
             >
               Reset Filters
             </button>
@@ -366,7 +375,8 @@ export default function Portfolio({ onSelectEstimate }) {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="relative w-full max-w-4xl bg-[#0f172a] border border-white/15 rounded-3xl overflow-hidden shadow-2xl space-y-0"
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                className="relative w-full max-w-4xl bg-[#090d18] border border-white/15 rounded-3xl overflow-hidden shadow-2xl space-y-0"
               >
                 {/* Header Image Banner */}
                 <div className="relative h-72 sm:h-96 w-full">
@@ -375,7 +385,7 @@ export default function Portfolio({ onSelectEstimate }) {
                     alt={selectedProject.title}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/60 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#090d18] via-[#090d18]/60 to-transparent" />
 
                   {/* Close Button */}
                   <button
@@ -387,10 +397,10 @@ export default function Portfolio({ onSelectEstimate }) {
 
                   {/* Title Info */}
                   <div className="absolute bottom-6 left-6 right-6 space-y-2">
-                    <span className="px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-mono">
+                    <span className="px-3 py-1 rounded-full badge-theme text-xs font-mono">
                       {selectedProject.client} • Case Study
                     </span>
-                    <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-heading">
+                    <h2 className="text-3xl sm:text-4xl font-black text-white font-heading">
                       {selectedProject.title}
                     </h2>
                     <p className="text-sm text-slate-300">{selectedProject.subtitle}</p>
@@ -404,7 +414,7 @@ export default function Portfolio({ onSelectEstimate }) {
                   <div className="grid grid-cols-3 gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
                     {selectedProject.metrics.map((m, idx) => (
                       <div key={idx} className="space-y-1">
-                        <div className="text-xl sm:text-2xl font-extrabold text-cyan-400 font-heading">
+                        <div className="text-xl sm:text-2xl font-black text-[var(--accent-light)] font-heading">
                           {m.value}
                         </div>
                         <div className="text-[11px] text-slate-400 font-medium">
@@ -422,10 +432,10 @@ export default function Portfolio({ onSelectEstimate }) {
                       </h4>
                       <button
                         onClick={() => setSimulatingPreview(!simulatingPreview)}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold hover:bg-cyan-500/20 transition"
+                        className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl badge-theme text-xs font-semibold hover:bg-white/10 transition"
                       >
-                        <Play className="w-3.5 h-3.5 fill-cyan-400" />
-                        <span>{simulatingPreview ? "Hide Preview" : "Launch Interactive Demo"}</span>
+                        <Play className="w-3.5 h-3.5 fill-[var(--accent-light)]" />
+                        <span>{simulatingPreview ? "Hide Demo Sandbox" : "Launch Interactive Demo"}</span>
                       </button>
                     </div>
 
@@ -434,16 +444,16 @@ export default function Portfolio({ onSelectEstimate }) {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="p-6 rounded-2xl bg-[#080d1a] border border-cyan-500/30 space-y-4 text-center font-mono"
+                        className="p-6 rounded-2xl bg-[#050811] border border-[var(--accent-border)] space-y-4 text-center font-mono shadow-inner"
                       >
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">
                           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                           <span>Simulated Sandbox Environment Running</span>
                         </div>
                         <p className="text-xs text-slate-300 max-w-md mx-auto">
-                          [{selectedProject.title}] v2.4 initialized. All vector embeddings loaded into memory latency test.
+                          [{selectedProject.title}] v2.5 initialized. All vector embeddings loaded into memory latency test.
                         </p>
-                        <div className="p-3 bg-slate-900 rounded-xl text-cyan-300 text-[11px] text-left">
+                        <div className="p-3 bg-slate-900 rounded-xl text-[var(--accent-light)] text-[11px] text-left">
                           &gt; GET /api/v2/metrics: 200 OK (14ms)<br />
                           &gt; WebGL Shaders compiled: 60 FPS target locked
                         </div>
@@ -504,7 +514,7 @@ export default function Portfolio({ onSelectEstimate }) {
                       </button>
                       <button
                         onClick={() => handleRequestSimilar(selectedProject)}
-                        className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-white text-xs font-bold shadow-lg hover:scale-105 transition"
+                        className="btn-theme-primary flex items-center gap-2 px-6 py-2.5 rounded-xl text-white text-xs font-bold shadow-lg"
                       >
                         <span>Request Similar Project</span>
                         <ArrowRight className="w-4 h-4" />
