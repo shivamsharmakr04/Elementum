@@ -8,69 +8,46 @@
 
 ## Overview
 
-Elementum is a frontend-focused product-studio experience built with React and Vite. It presents an AI/digital-product brand through a dark, futuristic interface with interactive sections, portfolio exploration, project estimation, inquiry flows, FAQs, and motion-driven UI.
+Elementum is a self-contained frontend project built with React and Vite. It demonstrates a modern digital-product studio experience through interactive sections, portfolio exploration, services, project estimation, an inquiry wizard, testimonials, FAQs, and responsive motion-driven UI.
 
-The project is intentionally self-contained: it can be cloned and run locally without a backend service.
+There is no required backend or database.
 
-## ✨ Highlights
+## Features
 
-- Responsive product-studio landing experience
-- Dark glassmorphism visual language
-- Animated and interactive hero experience
-- Portfolio/project filtering and search
-- Project scope and cost estimation flow
-- Multi-step project inquiry experience
-- FAQ search and filtering
+- Responsive product-studio landing page
+- Dark glassmorphism visual system
+- Animated hero and micro-interactions
+- Portfolio/project exploration
+- Service showcase
+- Project scope and cost estimator
+- Multi-step contact/inquiry wizard
+- Testimonials and FAQ sections
 - Theme/accent interactions
-- Motion effects with Framer Motion
-- Icon system using Lucide React and React Icons
-- Confetti feedback using Canvas Confetti
+- Responsive navigation and footer
 
-## 🧰 Tech Stack
+## Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| React 19 | UI and component architecture |
-| Vite 8 | Development server and production bundling |
-| Tailwind CSS 4 | Utility-first styling |
-| Framer Motion | UI animation |
-| Lucide React | Interface icons |
-| React Icons | Additional iconography |
-| Canvas Confetti | Interaction feedback |
-| ESLint | Code-quality checks |
+- React 19
+- Vite 8
+- Tailwind CSS 4
+- Framer Motion
+- Lucide React
+- React Icons
+- Canvas Confetti
+- ESLint
 
-## 📁 Project Structure
-
-```text
-Elementum/
-├── public/              # Static assets
-├── src/
-│   ├── components/      # Reusable UI pieces
-│   ├── assets/          # Application assets
-│   ├── App.jsx          # Main application
-│   └── main.jsx         # React entrypoint
-├── index.html
-├── package.json
-├── vite.config.js
-├── tailwind.config.js
-├── postcss.config.js
-├── eslint.config.js
-└── README.md
-```
-
-## 🚀 Getting Started
+## Run Locally
 
 ### Requirements
 
-- Node.js 20+
-- npm 10+
+Node.js 20+ and npm 10+ are recommended.
 
-### Installation
+### Install
 
 ```bash
 git clone https://github.com/shivamsharmakr04/Elementum.git
 cd Elementum
-npm install
+npm ci
 ```
 
 ### Development
@@ -81,71 +58,58 @@ npm run dev
 
 Open the local URL printed by Vite.
 
-### Production Build
+### Verify the project
 
 ```bash
+npm run lint
 npm run build
 ```
 
-### Preview Production Build
+### Preview the production build
 
 ```bash
 npm run preview
 ```
 
-### Lint
+## Project Structure
 
-```bash
-npm run lint
+```text
+Elementum/
+├── public/                 # Static assets
+├── src/
+│   ├── components/         # Page sections and reusable UI
+│   ├── assets/             # Local assets
+│   ├── App.jsx             # Application composition
+│   └── main.jsx            # React entrypoint
+├── index.html
+├── package.json
+├── package-lock.json
+├── vite.config.js
+├── eslint.config.js
+├── postcss.config.js
+└── README.md
 ```
 
-## 🌐 Deployment
+## Deployment
 
-The repository contains deployment configuration for common static/frontend hosting platforms. For a clean deployment, build the project with:
+Build the static application with:
 
 ```bash
 npm run build
 ```
 
-The generated production assets are placed in `dist/`.
+The generated files are placed in `dist/` and can be deployed to a static hosting provider.
 
-## 🎯 Project Goals
+## Project Status
 
-Elementum focuses on demonstrating:
+**Active frontend project / portfolio showcase.**
 
-1. Strong visual hierarchy and branding
-2. Reusable React components
-3. Responsive frontend engineering
-4. Interactive product storytelling
-5. Modern motion and micro-interactions
-6. A polished developer portfolio-quality frontend
-
-## 🔧 Configuration
-
-This is primarily a client-side application and does not require a backend database or API for its core experience.
-
-If environment variables are introduced later, document them in an `.env.example` file and never commit real credentials.
-
-## 🧪 Quality Checks
-
-Before opening a pull request or deploying:
-
-```bash
-npm ci
-npm run lint
-npm run build
-```
-
-## 📌 Project Status
-
-**Status:** Active frontend project / portfolio showcase.
-
-## 👨‍💻 Author
+## Author
 
 **Shivam Kumar** — Full-Stack Developer
 
 [GitHub](https://github.com/shivamsharmakr04) · [LinkedIn](https://linkedin.com/in/shivam-kumar-b0aab2209)
 
-## 📄 License
+## License
 
-No license file is currently declared in this repository. Add a license if you intend to distribute the project as open source.
+No license file is currently declared. Add an explicit license if you intend to distribute the project as open source.
